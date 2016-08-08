@@ -1,27 +1,68 @@
 import Post from '../models/post_model';
 
+const cleanPosts = (posts) => {
+  return posts.map(post => {
+    return { id: post._id, title: post.title, tags: post.tags };
+  });
+};
+
 export const createPost = (req, res) => {
   const post = new Post();
   post.title = req.body.title;
+  post.content = req.body.content;
+  post.tags = req.body.tags;
   post.save()
     .then(result => {
-      res.json({ message: 'Post created!' });
+      res.json(result);
     })
     .catch(error => {
       res.json({ error });
     });
-  res.send('post should be created here');
 };
 
 export const getPosts = (req, res) => {
-  res.send('posts should be returned');
+  Post.find()
+  .then(result => {
+    res.json(cleanPosts(result));
+  })
+  .catch(error => {
+    res.json({ error });
+  });
 };
+
 export const getPost = (req, res) => {
-  res.send('single post looked up');
+  Post.findById(req.params.id)
+  .then(result => {
+    res.json(result);
+  })
+  .catch(error => {
+    res.json({ error });
+  });
 };
+
 export const deletePost = (req, res) => {
-  res.send('delete a post here');
+  Post.findByIdAndRemove(req.params.id)
+  .then(result => {
+    res.json({ message: 'Post deleted!' });
+  })
+  .catch(error => {
+    res.json({ error });
+  });
 };
+
 export const updatePost = (req, res) => {
-  res.send('update a post here');
+  Post.findById(req.params.id)
+  .then(result => {
+    const newPost = result;
+    newPost.title = (req.body.title !== undefined) ? req.body.title : result.title;
+    newPost.content = (req.body.content !== undefined) ? req.body.content : result.content;
+    newPost.tags = (req.body.tags !== undefined) ? req.body.tags : result.tags;
+    return newPost.save();
+  })
+  .then(result => {
+    res.json(result);
+  })
+  .catch(error => {
+    res.json({ error });
+  });
 };
