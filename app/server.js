@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import mongoose from 'mongoose';
 
 // initialize
 const app = express();
@@ -19,8 +20,14 @@ app.get('/', (req, res) => {
 });
 
 // START THE SERVER
-// =============================================================================
+
+// DB Setup
+const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/blog';
+mongoose.connect(mongoURI);
+// set mongoose promises to es6 default
+mongoose.Promise = global.Promise;
 const port = process.env.PORT || 9090;
+
 app.listen(port);
 
 console.log(`listening on: ${port}`);
