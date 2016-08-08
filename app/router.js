@@ -9,5 +9,12 @@ router.get('/', (req, res) => {
 });
 
 // /your routes will go here
+router.route('/posts')
+  .post(Posts.createPost)
+  .get(Posts.getPosts);
 
+router.route('/posts/:id')
+  .post(Posts.getPost)
+  .put(Posts.updatePost)
+  .delete(Posts.deletePost);
 export default router;
