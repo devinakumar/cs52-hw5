@@ -24,10 +24,12 @@ export const signup = (req, res, next) => {
       user.email = email;
       user.password = password;
       user.username = username;
-      user.save();
-      return res.send({ token: tokenForUser(user) });
+      return user.save();
     }
-  }).catch(error => {
+  }).then(result => {
+    return res.send({ token: tokenForUser(result) });
+  })
+  .catch(error => {
     console.log(error);
     return res.send(`errror ${error}`);
   });

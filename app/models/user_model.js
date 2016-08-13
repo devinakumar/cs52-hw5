@@ -16,25 +16,33 @@ UserSchema.pre('save', function beforeUserSave(next) {
   // this is a reference to our model
   // the function runs in some other context so DO NOT bind it
   const user = this;
-  if (!user.isModified(user.password)) return next();
+  if (!user.isModified('password')) {
+    console.log('not new password');
+    return next();
+  }
   // generate a salt then run callback
   bcrypt.genSalt(10, (err, salt) => {
     if (err) {
+      console.log(err);
       return next(err);
     }
 
     // hash (encrypt) our password using the salt
     bcrypt.hash(user.password, salt, null, (err, hash) => {
-      if (err) { return next(err); }
+      if (err) {
+        console.log(err);
+        return next(err);
+      }
 
       // overwrite plain text password with encrypted password
+      console.log(hash);
       user.password = hash;
       return next();
     });
   });
   // when done run the next callback with no arguments
   // call next with an error if you encounter one
-  return next();
+  // return next();
 });
 
 // note use of named function rather than arrow notation
