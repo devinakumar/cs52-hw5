@@ -37,6 +37,17 @@ UserSchema.pre('save', function beforeUserSave(next) {
   return next();
 });
 
+// note use of named function rather than arrow notation
+//  this arrow notation is lexically scoped and prevents binding scope, which mongoose relies on
+UserSchema.methods.comparePassword = function comparePassword(candidatePassword, callback) {
+  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
+    if (err) { return callback(err); }
+
+    callback(null, isMatch);
+  });
+};
+
+
 // create model class
 const UserModel = mongoose.model('User', UserSchema);
 
