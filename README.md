@@ -1,9 +1,4 @@
-# starter express app template
+# Blog back-end: heroku server
+This back end implements a heroku server using express, node, and mongo.  It stores user information and post information, which are both accessed in the front end.  Each user is associated with an email, password, and username (which is then attached to every post).  Each post is associated with a title, content, tags, and a user.  The user that authors the post will always be the user associated with the post, no matter who edits it.  The server will check if a user is signed up when he or she tries to log in; if not, log in will not work.  Users who sign up must provide unique emails, or they are considered invalid.  Users may also sign out.  One of the problems I ran into was how to store the username information.  I decided to store it as a string and then pass it up to the front-end instead of using populate to access the information.  This method was more conducive to having the author of the post stay the same no matter who edited the post.
 
-* node with babel
-* expressjs
-* airbnb eslint rules
-
-Procfile set up to run on [heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs#deploy-the-app)
-
-
+EC: pretty styling
